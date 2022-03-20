@@ -120,16 +120,16 @@ gunSelect.addEventListener('change', () => {
             currentFactory = new BasicFactory(c, player)
             break;
         case '2':
-
+            currentFactory = new Level2Factory(c, player)
             break;
         case '3':
-
+            currentFactory = new Level3Factory(c, player)
             break;
         case '4':
-
+            currentFactory = new Level4Factory(c, player)
             break;
         case '5':
-
+            currentFactory = new Level5Factory(c, player)
             break;
         default:
             break;

@@ -10,6 +10,7 @@
   <script src="https://kit.fontawesome.com/d36df8790b.js" crossorigin="anonymous"></script>
   <script src="./src/factorymethod.js"></script>
   <link rel="stylesheet" href="./style/style.css" />
+  <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
   <title>Demo Design Parttern</title>
 </head>
 
@@ -22,7 +23,10 @@
         <canvas id="canvas1" class="w-100 h-100 rounded"></canvas>
       </div>
       <div class="col-4">
-        <h4>Select your gun level</h4>
+        <h4 class="text-primary">Control</h4>
+        <p>Press A D to move</p>
+        <p>Press Space to shoot</p>
+        <h4 class="text-primary">Select your gun level</h4>
         <select id="gunSelect" class="form-select" aria-label="Default select example">
           <option value="1" selected>Level 1</option>
           <option value="2">Level 2</option>
@@ -30,16 +34,15 @@
           <option value="4">Level 4</option>
           <option value="5">Level 5</option>
         </select>
+        <h4 class="text-primary mt-2">Explain</h4>
+        <p>When you change the gun level, you change the <b>factory</b> in <b>Factory Method Design Pattern</b></p>
       </div>
     </div>
-    <!-- End Demo Factory Method -->
-    <!-- Start Demo Factory Method -->
-    <h1><i class="fas fa-bolt"></i> Demo Abstract Factory</i></h1>
-    <div class="row m-0">
-      <div class="col-8"></div>
-      <div class="col-4"></div>
+    <div class="row justify-content-center m-3">
+      <div class="col-2">
+        <a href="./abstractMethod.html" class="btn btn-primary">Abstract Factory <i class="fas fa-arrow-right"></i></a>
+      </div>
     </div>
-    <!-- End Demo Factory Method -->
   </div>
 
   <!-- Javascript -->

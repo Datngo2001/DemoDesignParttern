@@ -36,33 +36,8 @@ class Player {
     }
 }
 
-class Projectile {
-    constructor({ position, velocity }) {
-        this.position = position
-        this.velocity = velocity
-        this.radius = 3
-    }
-
-    draw() {
-        c.beginPath()
-        c.arc(this.position.x, this.position.y, this.radius, 0, Math.PI * 2)
-        c.fillStyle = 'Red'
-        c.fill()
-        c.closePath()
-    }
-
-    update() {
-        this.draw()
-        this.position.x += this.velocity.x
-        this.position.y += this.velocity.y
-
-        // if (this.position.x < 0 || this.position.x > canvas.width) {
-        //     projectiles.
-        // }
-    }
-}
-
 const player = new Player()
+var currentFactory = new BasicFactory(c, player)
 const projectiles = []
 const keys = {
     a: {
@@ -112,17 +87,7 @@ addEventListener('keydown', (event) => {
             break;
         case ' ':
             keys.space.pressed = true
-            projectiles.push(new Projectile({
-                position: {
-                    x: player.position.x + player.width / 2,
-                    y: player.position.y
-                },
-                velocity: {
-                    x: 0,
-                    y: -5
-                }
-            }))
-
+            projectiles.push(currentFactory.produceBullet())
             break;
 
         default:
@@ -142,6 +107,30 @@ addEventListener('keyup', (event) => {
             keys.space.pressed = false
             break;
 
+        default:
+            break;
+    }
+})
+
+// ############### Gun Selection ###############
+const gunSelect = document.getElementById('gunSelect')
+gunSelect.addEventListener('change', () => {
+    switch (gunSelect.value) {
+        case '1':
+            currentFactory = new BasicFactory(c, player)
+            break;
+        case '2':
+
+            break;
+        case '3':
+
+            break;
+        case '4':
+
+            break;
+        case '5':
+
+            break;
         default:
             break;
     }

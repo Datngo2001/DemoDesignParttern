@@ -1,94 +1,68 @@
-/**
- * The Creator class declares the factory method that is supposed to return an
- * object of a Product class. The Creator's subclasses usually provide the
- * implementation of this method.
- */
-abstract class Creator {
-    /**
-     * Note that the Creator may also provide some default implementation of the
-     * factory method.
-     */
-    public abstract factoryMethod(): Product;
+// ################ FACTORY ################
+abstract class bulletFactory {
+    c: any
+    player: any
+    constructor(context: any, player: any) {
+        this.c = context
+        this.player = player
+    }
+    public abstract produceBullet(): bullet;
+}
 
-    /**
-     * Also note that, despite its name, the Creator's primary responsibility is
-     * not creating products. Usually, it contains some core business logic that
-     * relies on Product objects, returned by the factory method. Subclasses can
-     * indirectly change that business logic by overriding the factory method
-     * and returning a different type of product from it.
-     */
-    public someOperation(): string {
-        // Call the factory method to create a Product object.
-        const product = this.factoryMethod();
-        // Now, use the product.
-        return `Creator: The same creator's code has just worked with ${product.operation()}`;
+class BasicFactory extends bulletFactory {
+
+    constructor(context: any, player: any) {
+        super(context, player)
+    }
+    public produceBullet(): bullet {
+        return new BasicBulet({
+            context: this.c,
+            position: {
+                x: this.player.position.x + this.player.width / 2,
+                y: this.player.position.y
+            },
+            velocity: {
+                x: 0,
+                y: -5
+            }
+        });
+    }
+}
+// ############### END REGION ###############
+
+
+// ################ PRODUCT ################
+interface bullet {
+    draw(): void;
+    update(): void;
+}
+
+class BasicBulet implements bullet {
+    position: { x: number, y: number }
+    velocity: { x: number, y: number }
+    radius: number
+    c: any
+
+    constructor({ context, position, velocity }) {
+        this.position = position
+        this.velocity = velocity
+        this.radius = 3
+        this.c = context
+    }
+
+    draw() {
+        this.c.beginPath()
+        this.c.arc(this.position.x, this.position.y, this.radius, 0, Math.PI * 2)
+        this.c.fillStyle = 'Red'
+        this.c.fill()
+        this.c.closePath()
+    }
+
+    update() {
+        this.draw()
+        this.position.x += this.velocity.x
+        this.position.y += this.velocity.y
     }
 }
 
-/**
- * Concrete Creators override the factory method in order to change the
- * resulting product's type.
- */
-class ConcreteCreator1 extends Creator {
-    /**
-     * Note that the signature of the method still uses the abstract product
-     * type, even though the concrete product is actually returned from the
-     * method. This way the Creator can stay independent of concrete product
-     * classes.
-     */
-    public factoryMethod(): Product {
-        return new ConcreteProduct1();
-    }
-}
-
-class ConcreteCreator2 extends Creator {
-    public factoryMethod(): Product {
-        return new ConcreteProduct2();
-    }
-}
-
-/**
- * The Product interface declares the operations that all concrete products must
- * implement.
- */
-interface Product {
-    operation(): string;
-}
-
-/**
- * Concrete Products provide various implementations of the Product interface.
- */
-class ConcreteProduct1 implements Product {
-    public operation(): string {
-        return '{Result of the ConcreteProduct1}';
-    }
-}
-
-class ConcreteProduct2 implements Product {
-    public operation(): string {
-        return '{Result of the ConcreteProduct2}';
-    }
-}
-
-/**
- * The client code works with an instance of a concrete creator, albeit through
- * its base interface. As long as the client keeps working with the creator via
- * the base interface, you can pass it any creator's subclass.
- */
-function clientCode(creator: Creator) {
-    // ...
-    console.log('Client: I\'m not aware of the creator\'s class, but it still works.');
-    console.log(creator.someOperation());
-    // ...
-}
-
-/**
- * The Application picks a creator's type depending on the configuration or
- * environment.
- */
-console.log('App: Launched with the ConcreteCreator1.');
-clientCode(new ConcreteCreator1());
-console.log('');
-
-console.log('App: Launched with the ConcreteCreator2.');
-clientCode(new ConcreteCreator2());
+// ############### END REGION ###############

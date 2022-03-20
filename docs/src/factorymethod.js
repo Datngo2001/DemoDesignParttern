@@ -13,95 +13,54 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-/**
- * The Creator class declares the factory method that is supposed to return an
- * object of a Product class. The Creator's subclasses usually provide the
- * implementation of this method.
- */
-var Creator = /** @class */ (function () {
-    function Creator() {
+// ################ FACTORY ################
+var bulletFactory = /** @class */ (function () {
+    function bulletFactory(context, player) {
+        this.c = context;
+        this.player = player;
     }
-    /**
-     * Also note that, despite its name, the Creator's primary responsibility is
-     * not creating products. Usually, it contains some core business logic that
-     * relies on Product objects, returned by the factory method. Subclasses can
-     * indirectly change that business logic by overriding the factory method
-     * and returning a different type of product from it.
-     */
-    Creator.prototype.someOperation = function () {
-        // Call the factory method to create a Product object.
-        var product = this.factoryMethod();
-        // Now, use the product.
-        return "Creator: The same creator's code has just worked with ".concat(product.operation());
-    };
-    return Creator;
+    return bulletFactory;
 }());
-/**
- * Concrete Creators override the factory method in order to change the
- * resulting product's type.
- */
-var ConcreteCreator1 = /** @class */ (function (_super) {
-    __extends(ConcreteCreator1, _super);
-    function ConcreteCreator1() {
-        return _super !== null && _super.apply(this, arguments) || this;
+var BasicFactory = /** @class */ (function (_super) {
+    __extends(BasicFactory, _super);
+    function BasicFactory(context, player) {
+        return _super.call(this, context, player) || this;
     }
-    /**
-     * Note that the signature of the method still uses the abstract product
-     * type, even though the concrete product is actually returned from the
-     * method. This way the Creator can stay independent of concrete product
-     * classes.
-     */
-    ConcreteCreator1.prototype.factoryMethod = function () {
-        return new ConcreteProduct1();
+    BasicFactory.prototype.produceBullet = function () {
+        return new BasicBulet({
+            context: this.c,
+            position: {
+                x: this.player.position.x + this.player.width / 2,
+                y: this.player.position.y
+            },
+            velocity: {
+                x: 0,
+                y: -5
+            }
+        });
     };
-    return ConcreteCreator1;
-}(Creator));
-var ConcreteCreator2 = /** @class */ (function (_super) {
-    __extends(ConcreteCreator2, _super);
-    function ConcreteCreator2() {
-        return _super !== null && _super.apply(this, arguments) || this;
+    return BasicFactory;
+}(bulletFactory));
+var BasicBulet = /** @class */ (function () {
+    function BasicBulet(_a) {
+        var context = _a.context, position = _a.position, velocity = _a.velocity;
+        this.position = position;
+        this.velocity = velocity;
+        this.radius = 3;
+        this.c = context;
     }
-    ConcreteCreator2.prototype.factoryMethod = function () {
-        return new ConcreteProduct2();
+    BasicBulet.prototype.draw = function () {
+        this.c.beginPath();
+        this.c.arc(this.position.x, this.position.y, this.radius, 0, Math.PI * 2);
+        this.c.fillStyle = 'Red';
+        this.c.fill();
+        this.c.closePath();
     };
-    return ConcreteCreator2;
-}(Creator));
-/**
- * Concrete Products provide various implementations of the Product interface.
- */
-var ConcreteProduct1 = /** @class */ (function () {
-    function ConcreteProduct1() {
-    }
-    ConcreteProduct1.prototype.operation = function () {
-        return '{Result of the ConcreteProduct1}';
+    BasicBulet.prototype.update = function () {
+        this.draw();
+        this.position.x += this.velocity.x;
+        this.position.y += this.velocity.y;
     };
-    return ConcreteProduct1;
+    return BasicBulet;
 }());
-var ConcreteProduct2 = /** @class */ (function () {
-    function ConcreteProduct2() {
-    }
-    ConcreteProduct2.prototype.operation = function () {
-        return '{Result of the ConcreteProduct2}';
-    };
-    return ConcreteProduct2;
-}());
-/**
- * The client code works with an instance of a concrete creator, albeit through
- * its base interface. As long as the client keeps working with the creator via
- * the base interface, you can pass it any creator's subclass.
- */
-function clientCode(creator) {
-    // ...
-    console.log('Client: I\'m not aware of the creator\'s class, but it still works.');
-    console.log(creator.someOperation());
-    // ...
-}
-/**
- * The Application picks a creator's type depending on the configuration or
- * environment.
- */
-console.log('App: Launched with the ConcreteCreator1.');
-clientCode(new ConcreteCreator1());
-console.log('');
-console.log('App: Launched with the ConcreteCreator2.');
-clientCode(new ConcreteCreator2());
+// ############### END REGION ###############

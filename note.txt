@@ -1,0 +1,2 @@
+lệnh dịch code (chạy bằng cmd):
+tsc -p "./"

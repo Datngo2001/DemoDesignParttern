@@ -11,7 +11,7 @@ class Player {
         }
 
         const image = new Image()
-        image.src = './asset/starship.png'
+        image.src = './asset/game1/starship.png'
         image.onload = () => {
             const scale = 1
             this.image = image
